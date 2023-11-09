@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Book } from '../shared/book';
 import { RatingComponent } from '../shared/rating.component';
@@ -11,5 +11,16 @@ import { RatingComponent } from '../shared/rating.component';
   styleUrls: ['./book.component.scss']
 })
 export class BookComponent {
-  @Input() book?: Book;
+  @Input({ required: true}) book?: Book;
+  @Output() rateUp = new EventEmitter<Book>();
+  @Output() rateDown = new EventEmitter<Book>();
+
+  doRateUp() {
+    this.rateUp.emit(this.book);
+  }
+
+  doRateDown() {
+    this.rateDown.emit(this.book);
+  }
+
 }
