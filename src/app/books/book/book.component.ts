@@ -22,5 +22,4 @@ export class BookComponent {
   doRateDown() {
     this.rateDown.emit(this.book);
   }
-
 }
