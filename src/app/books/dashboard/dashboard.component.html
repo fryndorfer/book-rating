@@ -2,4 +2,4 @@
   <h2>Anzahl der Bücher: {{books.length}} </h2>
 </div>
 <app-book *ngFor="let e of books" [book]="e"
-  (rateUp)="doRateUp($event)" (rateDown)="doRateDown($event)"></app-book>
+  (rateUp)="doRateUp($event)" (rateDown)="doRateDown($event)" (delete)="deleteBook($event)"></app-book>

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Book } from '../shared/book';
 import { BookComponent } from "../book/book.component";
 import { BookRatingService } from '../shared/book-rating.service';
+import { BookStoreService } from '../shared/book-store.service';
 
 @Component({
     selector: 'app-dashboard',
@@ -14,24 +15,12 @@ import { BookRatingService } from '../shared/book-rating.service';
 export class DashboardComponent {
   books: Book[] = [];
   private rs = inject(BookRatingService);
+  private bs = inject(BookStoreService);
 
   constructor() {
-    this.books = [
-      {
-        isbn: '123',
-        title: 'Angular',
-        description: 'Grundlagen und mehr',
-        rating: 5,
-        price: 42.90
-      },
-      {
-        isbn: '456',
-        title: 'Vue.js',
-        description: 'Das grüne Framework',
-        rating: 3,
-        price: 36.90
-      }
-    ];
+    this.bs.getAll().subscribe(books => {
+      this.books = books;
+    });
   }
 
   doRateUp(book: Book) {
@@ -52,5 +41,15 @@ export class DashboardComponent {
         return b;
       }
     });
+  }
+
+  deleteBook(book: Book) {
+    const del = this.bs.delete(book.isbn).subscribe(response => {
+      if(response.status == 200) {
+        this.bs.getAll().subscribe(books => {
+          this.books = books;
+        });
+      }
+    })
   }
 }
