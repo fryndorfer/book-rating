@@ -18,9 +18,7 @@ export class DashboardComponent {
   private bs = inject(BookStoreService);
 
   constructor() {
-    this.bs.getAll().subscribe(books => {
-      this.books = books;
-    });
+    this.loadBooks();
   }
 
   doRateUp(book: Book) {
@@ -46,10 +44,14 @@ export class DashboardComponent {
   deleteBook(book: Book) {
     const del = this.bs.delete(book.isbn).subscribe(response => {
       if(response.status == 200) {
-        this.bs.getAll().subscribe(books => {
-          this.books = books;
-        });
+        this.loadBooks();
       }
     })
+  }
+
+  loadBooks(){
+    this.bs.getAll().subscribe(books => {
+    this.books = books;
+    });
   }
 }
