@@ -16,9 +16,19 @@ export class DashboardComponent {
   books: Book[] = [];
   private rs = inject(BookRatingService);
   private bs = inject(BookStoreService);
+  dateTime?: Date;
+  timer: any;
 
   constructor() {
     this.loadBooks();
+    this.timer = setInterval(() => {
+      this.dateTime = new Date();
+      console.log(this.dateTime);
+    }, 1000);
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.timer);
   }
 
   doRateUp(book: Book) {

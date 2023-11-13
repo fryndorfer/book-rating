@@ -1,4 +1,10 @@
 <div class="container">
   <h1>{{ title }}</h1>
+  <nav class="me-3">
+    <a routerLink="/books" class="me-2">Dashboard</a>
+    <a routerLink="/books/search" class="me-2">Suche</a>
+    <a routerLink="/books/create" class="me-2">Buch erstellen</a>
+  </nav>
+  <hr>
   <router-outlet></router-outlet>
 </div>

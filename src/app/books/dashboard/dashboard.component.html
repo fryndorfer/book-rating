@@ -1,5 +1,5 @@
 <div>
-  <h2>Anzahl der Bücher: {{books.length}} </h2>
+  <h2>Anzahl der Bücher: {{books.length}} </h2> {{ dateTime | date:'medium' }}
 </div>
 <app-book *ngFor="let e of books" [book]="e"
   (rateUp)="doRateUp($event)" (rateDown)="doRateDown($event)" (delete)="deleteBook($event)"></app-book>
