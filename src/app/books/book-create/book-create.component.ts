@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Book } from '../shared/book';
+import { Router } from '@angular/router';
+import { BookStoreService } from '../shared/book-store.service';
 
 @Component({
   selector: 'app-book-create',
@@ -10,6 +13,9 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
   styleUrls: ['./book-create.component.scss']
 })
 export class BookCreateComponent {
+  constructor(private router: Router) { }
+  private bs = inject(BookStoreService);
+
   bookForm = new FormGroup({
     isbn: new FormControl('', {
       nonNullable: true,
@@ -51,5 +57,27 @@ export class BookCreateComponent {
   isInvalid(controlName: keyof typeof this.bookForm.controls): boolean {
     const control = this.bookForm.controls[controlName];
     return control.touched && control.invalid;
+  }
+
+  hasError(controlName: keyof typeof this.bookForm.controls, code: string): boolean {
+    const control = this.bookForm.controls[controlName];
+    return control.touched && control.hasError(code);
+  }
+
+  submitForm() {
+    if (this.bookForm.invalid) {
+      return;
+    }
+
+    const book: Book = this.bookForm.getRawValue();
+    this.bs.create(book).subscribe({
+      next: response => {
+        this.router.navigate(['/books', response.isbn]);
+      },
+      error: problem => {
+        console.log(problem);
+      }
+    });
+    //this.router.navigateByUrl('/books');
   }
 }

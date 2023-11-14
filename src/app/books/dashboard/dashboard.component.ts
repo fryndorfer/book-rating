@@ -16,7 +16,7 @@ export class DashboardComponent {
   books: Book[] = [];
   private rs = inject(BookRatingService);
   private bs = inject(BookStoreService);
-  dateTime?: Date;
+  dateTime: Date = new Date();
   timer: any;
 
   constructor() {
