@@ -2,6 +2,8 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { BookStoreService } from '../shared/book-store.service';
+import { Observable, debounceTime, filter, switchMap } from 'rxjs';
+import { Book } from '../shared/book';
 
 @Component({
   selector: 'app-book-search',
@@ -13,10 +15,13 @@ import { BookStoreService } from '../shared/book-store.service';
 export class BookSearchComponent {
   searchControl = new FormControl('', { nonNullable: true });
   private bs = inject(BookStoreService);
+  books$ = new Observable<Book[]>;
 
   constructor() {
-    this.searchControl.valueChanges.subscribe(e => {
-      console.log(e);
-    });
+    this.books$ = this.searchControl.valueChanges.pipe(
+      debounceTime(100),
+      filter(e => e.length >= 3),
+      switchMap(e => this.bs.search(e))
+    )
   }
 }

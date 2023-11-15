@@ -1,7 +1,7 @@
-<div *ngIf="book">
+<div *ngIf="book$ | async as book">
   <h1>{{ book.title }}</h1>
+  <p>{{ book.description }}<p>
 </div>
 <hr>
-<br>
 <a routerLink="..">Zum Dashboard</a> <br>
 <a routerLink="/books/9783864909467">Zum Angular-Buch</a>
